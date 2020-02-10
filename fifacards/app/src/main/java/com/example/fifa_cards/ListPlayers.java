@@ -1,7 +1,5 @@
 package com.example.fifa_cards;
 
-import android.widget.ImageView;
-
 public class ListPlayers {
 
     private Integer id;

@@ -1,15 +1,11 @@
 package com.example.fifa_cards;
 
-import android.os.Bundle;
+import android.app.Application;
+import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,36 +15,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class PlayersViewModel extends AndroidViewModel {
+    public PlayersViewModel(Application application) {
+        super(application);
+    }
 
-    ArrayList<ListPlayers> playerList = new ArrayList<>();
+    private Application context = (Application) getApplication().getApplicationContext();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-       Toolbar toolbar = findViewById(R.id.toolbar);
-       setSupportActionBar(toolbar);
+    private MutableLiveData<ArrayList<ListPlayers>> playerList;
 
-        getJsonFileFromLocally();
-
-       RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
-       recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-       RecyclerView.Adapter mAdapter = new PlayerViewAdapter(playerList);
-       recyclerView.setAdapter(mAdapter);
+    public LiveData<ArrayList<ListPlayers>> getData() {
+        return playerList;
     }
 
     private String loadJSONFromAsset() {
         String json = null;
         try {
-            InputStream inputStream = getAssets().open("cards.json");
+            InputStream inputStream = context.getAssets().open("cards.json");
             int size = inputStream.available();
             byte[] buffer = new byte[size];
             inputStream.read(buffer);
             inputStream.close();
             json = new String(buffer, "UTF-8");
         } catch (IOException e) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            Log.d("error", e.toString());
         }
         return json;
     }
@@ -80,25 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 model.setDri(dri);
                 model.setDef(def);
                 model.setPhy(phy);
+
                 playerList.add(model);
             }
         } catch (JSONException e) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            Log.d("error2", e.toString());
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

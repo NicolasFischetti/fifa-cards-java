@@ -12,6 +12,10 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
@@ -54,7 +58,7 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
     public PlayerViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_players, parent, false);
+                .inflate(R.layout.items_view, parent, false);
         return new MyViewHolder(v);
     }
 
@@ -77,16 +81,16 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
         Glide
                 .with(holder.getPlayerImage.getContext())
                 .load(getPlayerImage)
-                .centerCrop()
+                .transform(new CenterCrop(), new RoundedCorners(15))
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.getPlayerImage);
 
-        holder.pac.setText(pac.toString());
-        holder.sho.setText(sho.toString());
-        holder.pas.setText(pas.toString());
-        holder.dri.setText(dri.toString());
-        holder.def.setText(def.toString());
-        holder.phy.setText(phy.toString());
+        holder.pac.setText("PAC: " + pac.toString());
+        holder.sho.setText("SHO: " + sho.toString());
+        holder.pas.setText("PAS: " + pas.toString());
+        holder.dri.setText("DRI: " + dri.toString());
+        holder.def.setText("DEF: " + def.toString());
+        holder.phy.setText("PHY: " + phy.toString());
     }
 
     @Override
