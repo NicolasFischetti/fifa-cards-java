@@ -1,6 +1,7 @@
 package com.example.fifa_cards;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +13,16 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
 public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.MyViewHolder>   {
-    private ArrayList<ListPlayers> mDataset;
+    private ArrayList<CardList> mDataset;
+    private OnItemClickListener mOnItemClickListener;
 
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
         TextView position;
         ImageView getPlayerImage;
@@ -33,8 +33,9 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
         TextView def;
         TextView phy;
         CardView cardView;
+        OnItemClickListener onItemClickListener;
 
-        MyViewHolder(View v) {
+        MyViewHolder(View v, OnItemClickListener onItemClickListener) {
             super(v);
             cardView = v.findViewById(R.id.card_view);
             name = v.findViewById(R.id.player_name);
@@ -46,11 +47,19 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
             dri = v.findViewById(R.id.dri);
             def = v.findViewById(R.id.def);
             phy = v.findViewById(R.id.phy);
+            this.onItemClickListener = onItemClickListener;
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onItemClick(getAdapterPosition());
         }
     }
 
-    PlayerViewAdapter(ArrayList<ListPlayers> myDataset) {
+    PlayerViewAdapter(ArrayList<CardList> myDataset, OnItemClickListener onItemClickListener) {
         mDataset = myDataset;
+        mOnItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -59,13 +68,13 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
                                                      int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.items_view, parent, false);
-        return new MyViewHolder(v);
+        return new MyViewHolder(v, mOnItemClickListener);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(MyViewHolder holder, int i) {
-        ListPlayers players = mDataset.get(i);
+        CardList players = mDataset.get(i);
         String name = players.getName();
         String position = players.getPosition();
         String getPlayerImage = players.getPlayerImage();
@@ -91,11 +100,17 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
         holder.dri.setText("DRI: " + dri.toString());
         holder.def.setText("DEF: " + def.toString());
         holder.phy.setText("PHY: " + phy.toString());
+
+
     }
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
     @Override

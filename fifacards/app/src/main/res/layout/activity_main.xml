@@ -23,6 +23,18 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <Button
+        android:id="@+id/create_deck_btn"
+        android:layout_width="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
+        android:text="Create Deck"
+        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <include layout="@layout/recycler_view_cards" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,7 +1,6 @@
 package com.example.fifa_cards;
 
-public class ListPlayers {
-
+public class CardList {
     private Integer id;
     private String name;
     private String playerImage;
@@ -12,6 +11,15 @@ public class ListPlayers {
     private Integer dri;
     private Integer def;
     private Integer phy;
+    private Boolean isSelected;
+
+    public Boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selection) {
+        isSelected = selection;
+    }
 
     public String getName() {
         return name;

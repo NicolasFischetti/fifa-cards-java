@@ -1,27 +1,31 @@
 package com.example.fifa_cards;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
 
-    ArrayList<ListPlayers> playerList = new ArrayList<>();
+public class MainActivity extends AppCompatActivity  {
+
+    private CardView cardView;
+    private Button createButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,61 +34,50 @@ public class MainActivity extends AppCompatActivity {
        Toolbar toolbar = findViewById(R.id.toolbar);
        setSupportActionBar(toolbar);
 
-        getJsonFileFromLocally();
+       cardView = findViewById(R.id.card_view);
+       createButton = findViewById(R.id.create_deck_btn);
 
-       RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
-       recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-       RecyclerView.Adapter mAdapter = new PlayerViewAdapter(playerList);
-       recyclerView.setAdapter(mAdapter);
+      PlayersViewModel model = ViewModelProviders.of(this).get(PlayersViewModel.class);
+
+       model.getPlayersCards().observe(this, new Observer<ArrayList<CardList>>() {
+           @Override
+           public void onChanged(final ArrayList<CardList> listPlayers) {
+               RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
+               recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), VERTICAL, false));
+               RecyclerView.Adapter mAdapter = new PlayerViewAdapter(listPlayers, new PlayerViewAdapter.OnItemClickListener() {
+                   @Override
+                   public void onItemClick(int position) {
+
+                   }
+               });
+               recyclerView.setAdapter(mAdapter);
+           }
+       });
+
+       alertDialog();
     }
 
-    private String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream inputStream = getAssets().open("cards.json");
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException e) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-        }
-        return json;
-    }
+    private void alertDialog() {
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText taskEditText = new EditText(MainActivity.this);
+                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Create your deck")
+                        .setCancelable(false)
+                        .setMessage("Please enter a name")
+                        .setView(taskEditText)
+                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-    private void getJsonFileFromLocally() {
-        try {
-            JSONArray jsonArray = new JSONArray(loadJSONFromAsset());
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Integer id = jsonObject.getInt("id");
-                String name = jsonObject.getString("name");
-                String playerImage = jsonObject.getString("playerImage");
-                String position = jsonObject.getString("position");
-                Integer pac = jsonObject.getInt("pac");
-                Integer sho = jsonObject.getInt("sho");
-                Integer pas = jsonObject.getInt("pas");
-                Integer dri = jsonObject.getInt("dri");
-                Integer def = jsonObject.getInt("def");
-                Integer phy = jsonObject.getInt("phy");
-
-                ListPlayers model = new ListPlayers();
-                model.setId(id);
-                model.setName(name);
-                model.setPlayerImage(playerImage);
-                model.setPosition(position);
-                model.setPac(pac);
-                model.setSho(sho);
-                model.setPas(pas);
-                model.setDri(dri);
-                model.setDef(def);
-                model.setPhy(phy);
-                playerList.add(model);
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .create();
+                dialog.show();
             }
-        } catch (JSONException e) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-        }
+        });
     }
 
     @Override
@@ -101,4 +94,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
