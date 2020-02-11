@@ -20,9 +20,9 @@ import java.util.ArrayList;
 
 public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.MyViewHolder>   {
     private ArrayList<CardList> mDataset;
-    private OnItemClickListener mOnItemClickListener;
+    private CardList players;
 
-    static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView position;
         ImageView getPlayerImage;
@@ -33,9 +33,8 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
         TextView def;
         TextView phy;
         CardView cardView;
-        OnItemClickListener onItemClickListener;
 
-        MyViewHolder(View v, OnItemClickListener onItemClickListener) {
+        MyViewHolder(View v) {
             super(v);
             cardView = v.findViewById(R.id.card_view);
             name = v.findViewById(R.id.player_name);
@@ -47,19 +46,24 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
             dri = v.findViewById(R.id.dri);
             def = v.findViewById(R.id.def);
             phy = v.findViewById(R.id.phy);
-            this.onItemClickListener = onItemClickListener;
-            v.setOnClickListener(this);
-        }
 
-        @Override
-        public void onClick(View v) {
-            onItemClickListener.onItemClick(getAdapterPosition());
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(players.isSelected()) {
+                        players.setSelected(false);
+                        cardView.setCardBackgroundColor(Color.WHITE);
+                    } else {
+                        players.setSelected(true);
+                        cardView.setCardBackgroundColor(Color.GRAY);
+                    }
+                }
+            });
         }
     }
 
-    PlayerViewAdapter(ArrayList<CardList> myDataset, OnItemClickListener onItemClickListener) {
+    PlayerViewAdapter(ArrayList<CardList> myDataset) {
         mDataset = myDataset;
-        mOnItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -68,13 +72,13 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
                                                      int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.items_view, parent, false);
-        return new MyViewHolder(v, mOnItemClickListener);
+        return new MyViewHolder(v);
     }
 
     @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int i) {
-        CardList players = mDataset.get(i);
+    public void onBindViewHolder(MyViewHolder holder, final int i) {
+        players = mDataset.get(i);
         String name = players.getName();
         String position = players.getPosition();
         String getPlayerImage = players.getPlayerImage();
@@ -101,16 +105,11 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
         holder.def.setText("DEF: " + def.toString());
         holder.phy.setText("PHY: " + phy.toString());
 
-
     }
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
     }
 
     @Override

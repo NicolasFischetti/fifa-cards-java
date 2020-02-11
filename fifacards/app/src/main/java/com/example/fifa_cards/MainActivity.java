@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,6 @@ import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
 
 public class MainActivity extends AppCompatActivity  {
 
-    private CardView cardView;
     private Button createButton;
 
     @Override
@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity  {
        Toolbar toolbar = findViewById(R.id.toolbar);
        setSupportActionBar(toolbar);
 
-       cardView = findViewById(R.id.card_view);
        createButton = findViewById(R.id.create_deck_btn);
 
       PlayersViewModel model = ViewModelProviders.of(this).get(PlayersViewModel.class);
@@ -43,13 +42,9 @@ public class MainActivity extends AppCompatActivity  {
            @Override
            public void onChanged(final ArrayList<CardList> listPlayers) {
                RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
+               recyclerView.setSelected(true);
                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), VERTICAL, false));
-               RecyclerView.Adapter mAdapter = new PlayerViewAdapter(listPlayers, new PlayerViewAdapter.OnItemClickListener() {
-                   @Override
-                   public void onItemClick(int position) {
-
-                   }
-               });
+               RecyclerView.Adapter mAdapter = new PlayerViewAdapter(listPlayers);
                recyclerView.setAdapter(mAdapter);
            }
        });

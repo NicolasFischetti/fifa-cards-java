@@ -11,7 +11,7 @@ public class CardList {
     private Integer dri;
     private Integer def;
     private Integer phy;
-    private Boolean isSelected;
+    private Boolean isSelected = false;
 
     public Boolean isSelected() {
         return isSelected;
