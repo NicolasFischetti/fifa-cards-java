@@ -47,16 +47,13 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
             def = v.findViewById(R.id.def);
             phy = v.findViewById(R.id.phy);
 
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(players.isSelected()) {
-                        players.setSelected(false);
-                        cardView.setCardBackgroundColor(Color.WHITE);
-                    } else {
-                        players.setSelected(true);
-                        cardView.setCardBackgroundColor(Color.GRAY);
-                    }
+            cardView.setOnClickListener(view -> {
+                if(players.isSelected()) {
+                    players.setSelected(false);
+                    cardView.setCardBackgroundColor(Color.WHITE);
+                } else {
+                    players.setSelected(true);
+                    cardView.setCardBackgroundColor(Color.GRAY);
                 }
             });
         }

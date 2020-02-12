@@ -38,40 +38,31 @@ public class MainActivity extends AppCompatActivity  {
 
       PlayersViewModel model = ViewModelProviders.of(this).get(PlayersViewModel.class);
 
-       model.getPlayersCards().observe(this, new Observer<ArrayList<CardList>>() {
-           @Override
-           public void onChanged(final ArrayList<CardList> listPlayers) {
-               RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
-               recyclerView.setSelected(true);
-               recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), VERTICAL, false));
-               RecyclerView.Adapter mAdapter = new PlayerViewAdapter(listPlayers);
-               recyclerView.setAdapter(mAdapter);
-           }
+       model.getPlayersCards().observe(this, listPlayers -> {
+           RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
+           recyclerView.setSelected(true);
+           recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), VERTICAL, false));
+           RecyclerView.Adapter mAdapter = new PlayerViewAdapter(listPlayers);
+           recyclerView.setAdapter(mAdapter);
        });
 
        alertDialog();
     }
 
     private void alertDialog() {
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EditText taskEditText = new EditText(MainActivity.this);
-                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Create your deck")
-                        .setCancelable(false)
-                        .setMessage("Please enter a name")
-                        .setView(taskEditText)
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+        createButton.setOnClickListener(v -> {
+            final EditText taskEditText = new EditText(MainActivity.this);
+            AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Create your deck")
+                    .setCancelable(false)
+                    .setMessage("Please enter a name")
+                    .setView(taskEditText)
+                    .setPositiveButton("Add", (dialog1, which) -> {
 
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .create();
-                dialog.show();
-            }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .create();
+            dialog.show();
         });
     }
 
