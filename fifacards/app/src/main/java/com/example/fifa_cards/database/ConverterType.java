@@ -8,23 +8,20 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ConverterType {
 
-    public static Gson gson;
-
     @TypeConverter
-    public static ArrayList<CardList> stringToSomeObjectList(String data) {
-        if (data == null) {
-            return null;
-        }
-        Type listType = new TypeToken<ArrayList<CardList>>() {}.getType();
-        return gson.fromJson(data, listType);
+    public static List<CardList> fromString(String value) {
+        Type listType = new TypeToken<List<CardList>>() {}.getType();
+        return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String someObjectListToString(ArrayList<CardList> someObjects) {
-        return gson.toJson(someObjects);
+    public static String fromArrayList(List<CardList> list) {
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        return json;
     }
-
 }

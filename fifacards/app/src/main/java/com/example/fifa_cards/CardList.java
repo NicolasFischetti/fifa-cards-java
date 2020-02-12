@@ -1,6 +1,11 @@
 package com.example.fifa_cards;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "cards")
 public class CardList {
+    @PrimaryKey(autoGenerate = true)
     private Integer id;
     private String name;
     private String playerImage;
@@ -33,7 +38,7 @@ public class CardList {
         return playerImage;
     }
 
-    void setPlayerImage(String playerImage) {
+    public void setPlayerImage(String playerImage) {
         this.playerImage = playerImage;
     }
 
@@ -41,7 +46,7 @@ public class CardList {
         return position;
     }
 
-    void setPosition(String position) {
+    public void setPosition(String position) {
         this.position = position;
     }
 
@@ -49,7 +54,7 @@ public class CardList {
         return id;
     }
 
-    void setId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -57,7 +62,7 @@ public class CardList {
         return pac;
     }
 
-    void setPac(Integer pac) {
+    public void setPac(Integer pac) {
         this.pac = pac;
     }
 
@@ -65,7 +70,7 @@ public class CardList {
         return sho;
     }
 
-    void setSho(Integer sho) {
+    public void setSho(Integer sho) {
         this.sho = sho;
     }
 
@@ -73,7 +78,7 @@ public class CardList {
         return pas;
     }
 
-    void setPas(Integer pas) {
+    public void setPas(Integer pas) {
         this.pas = pas;
     }
 
@@ -81,7 +86,7 @@ public class CardList {
         return dri;
     }
 
-    void setDri(Integer dri) {
+    public void setDri(Integer dri) {
         this.dri = dri;
     }
 
@@ -89,7 +94,7 @@ public class CardList {
         return def;
     }
 
-    void setDef(Integer def) {
+    public void setDef(Integer def) {
         this.def = def;
     }
 
@@ -97,7 +102,7 @@ public class CardList {
         return phy;
     }
 
-    void setPhy(Integer phy) {
+    public void setPhy(Integer phy) {
         this.phy = phy;
     }
 }

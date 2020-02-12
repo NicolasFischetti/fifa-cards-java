@@ -1,31 +1,25 @@
 package com.example.fifa_cards;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     private Button createButton;
+    private PlayersViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +29,13 @@ public class MainActivity extends AppCompatActivity  {
        setSupportActionBar(toolbar);
 
        createButton = findViewById(R.id.create_deck_btn);
+       viewModel = ViewModelProviders.of(this).get(PlayersViewModel.class);
 
-      PlayersViewModel model = ViewModelProviders.of(this).get(PlayersViewModel.class);
-
-       model.getPlayersCards().observe(this, listPlayers -> {
+        viewModel.getPlayersCards().observe(this, listPlayers -> {
            RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
            recyclerView.setSelected(true);
            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), VERTICAL, false));
-           RecyclerView.Adapter mAdapter = new PlayerViewAdapter(listPlayers);
+           PlayerViewAdapter mAdapter = new PlayerViewAdapter(listPlayers);
            recyclerView.setAdapter(mAdapter);
        });
 

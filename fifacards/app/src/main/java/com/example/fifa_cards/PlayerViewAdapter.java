@@ -16,10 +16,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.MyViewHolder>   {
-    private ArrayList<CardList> mDataset;
+    private List<CardList> mDataset;
     private CardList players;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -59,7 +59,7 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
         }
     }
 
-    PlayerViewAdapter(ArrayList<CardList> myDataset) {
+    PlayerViewAdapter(List<CardList> myDataset) {
         mDataset = myDataset;
     }
 

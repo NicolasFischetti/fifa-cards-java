@@ -1,31 +1,27 @@
 package com.example.fifa_cards;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List;
 
 public class PlayersViewModel extends AndroidViewModel {
     private CardsRepository cardRepository;
+    private LiveData<List<CardList>> mCardList;
 
     public PlayersViewModel(@NonNull Application application) {
         super(application);
         cardRepository = new CardsRepository(application);
+        mCardList = cardRepository.getAll();
     }
 
-    LiveData<ArrayList<CardList>> getPlayersCards() {
-        return cardRepository.getJsonFileFromLocally();
+    LiveData<List<CardList>> getPlayersCards() {
+        return mCardList;
     }
+
+    public void insert(List<CardList> cards) { cardRepository.insert(cards); }
 
 }
