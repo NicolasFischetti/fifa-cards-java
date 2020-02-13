@@ -1,77 +1,46 @@
 package com.example.fifa_cards;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
-
-import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button createButton;
-    private PlayersViewModel viewModel;
+    NavController navController;
+    AppBarConfiguration appBarConfiguration;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       Toolbar toolbar = findViewById(R.id.toolbar);
-       setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-       createButton = findViewById(R.id.create_deck_btn);
-       viewModel = ViewModelProviders.of(this).get(PlayersViewModel.class);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        DrawerLayout drawerLayout = findViewById(R.id.cards_activity);
 
-        viewModel.getPlayersCards().observe(this, listPlayers -> {
-           RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
-           recyclerView.setSelected(true);
-           recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), VERTICAL, false));
-           PlayerViewAdapter mAdapter = new PlayerViewAdapter(listPlayers);
-           recyclerView.setAdapter(mAdapter);
-       });
+        NavController navController = Navigation.findNavController(this, R.id.my_nav_host_fragment);
 
-       alertDialog();
-    }
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(drawerLayout).build();
 
-    private void alertDialog() {
-        createButton.setOnClickListener(v -> {
-            final EditText taskEditText = new EditText(MainActivity.this);
-            AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("Create your deck")
-                    .setCancelable(false)
-                    .setMessage("Please enter a name")
-                    .setView(taskEditText)
-                    .setPositiveButton("Add", (dialog1, which) -> {
+       NavigationUI.setupActionBarWithNavController( this, navController, appBarConfiguration);
+       NavigationUI.setupWithNavController(navigationView, navController);
 
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .create();
-            dialog.show();
-        });
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onSupportNavigateUp() {
+        navController = Navigation.findNavController(this, R.id.my_nav_host_fragment);
+       return  NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 
 }

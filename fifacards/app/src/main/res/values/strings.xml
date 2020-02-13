@@ -2,4 +2,9 @@
     <string name="app_name">fifa-cards</string>
     <string name="action_settings">Settings</string>
     <string name="soccer">soccer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="opne_drawable">open</string>
+    <string name="close_drawable">close</string>
 </resources>

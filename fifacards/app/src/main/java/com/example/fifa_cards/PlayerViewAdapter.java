@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
@@ -91,6 +92,7 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
         Glide
                 .with(holder.getPlayerImage.getContext())
                 .load(getPlayerImage)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .transform(new CenterCrop(), new RoundedCorners(15))
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.getPlayerImage);
