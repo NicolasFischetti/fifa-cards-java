@@ -16,7 +16,7 @@ public class CardsRepository {
     private CardsDao cardsDao;
 
     CardsRepository(Application application) {
-        CardsRoomDataBase db = CardsRoomDataBase.getDatabase(application);
+        CardsRoomDataBase db = CardsRoomDataBase.getInstance(application.getApplicationContext());
         cardsDao = db.cardsDao();
         liveDataPlayers.addSource(db.cardsDao().getall(),
                 cardsEntities -> {

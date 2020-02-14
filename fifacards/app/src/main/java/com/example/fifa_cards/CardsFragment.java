@@ -25,6 +25,7 @@ public class CardsFragment extends Fragment {
     private Button createButton;
     private PlayersViewModel viewModel;
     public NavController navController;
+    private PlayerViewAdapter playerViewAdapter;
 
     public CardsFragment() {
         // Required empty public constructor
@@ -38,12 +39,14 @@ public class CardsFragment extends Fragment {
 
         createButton =  rootView.findViewById(R.id.create_deck_btn);
         viewModel = ViewModelProviders.of(this).get(PlayersViewModel.class);
-        viewModel.getPlayersCards().observe(this, listPlayers -> {
+        viewModel.getPlayersCards().observe(getViewLifecycleOwner(), listPlayers -> {
             RecyclerView recyclerView = rootView.findViewById(R.id.my_recycler_view);
+            if(playerViewAdapter == null) {
+                playerViewAdapter = new PlayerViewAdapter(listPlayers);
+                recyclerView.setAdapter(playerViewAdapter);
+            }
             recyclerView.setSelected(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), VERTICAL, false));
-            PlayerViewAdapter mAdapter = new PlayerViewAdapter(listPlayers);
-            recyclerView.setAdapter(mAdapter);
         });
 
         alertDialog();
