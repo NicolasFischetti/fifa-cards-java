@@ -1,5 +1,4 @@
-package com.example.fifa_cards;
-
+package com.example.fifa_cards.views;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,21 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class DeckFragment extends Fragment {
+import com.example.fifa_cards.R;
 
-    public DeckFragment() {
-        // Required empty public constructor
-    }
+
+public class SettingFragment extends Fragment {
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_deck, container, false);
+        return inflater.inflate(R.layout.fragment_setting, container, false);
     }
+
 }

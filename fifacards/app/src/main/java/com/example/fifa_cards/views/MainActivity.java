@@ -1,6 +1,7 @@
-package com.example.fifa_cards;
+package com.example.fifa_cards.views;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.fifa_cards.R;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,11 +31,10 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.cards_activity);
 
         NavController navController = Navigation.findNavController(this, R.id.my_nav_host_fragment);
-
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(drawerLayout).build();
 
-       NavigationUI.setupActionBarWithNavController( this, navController, appBarConfiguration);
-       NavigationUI.setupWithNavController(navigationView, navController);
+        NavigationUI.setupActionBarWithNavController( this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
 
     }
 

@@ -10,22 +10,22 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.example.fifa_cards.CardList;
-import com.example.fifa_cards.LoadJson;
+import com.example.fifa_cards.entity.CardList;
+import com.example.fifa_cards.entity.DeckList;
+import com.example.fifa_cards.utils.LoadJson;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {CardList.class}, version = 1, exportSchema = false)
+@Database(entities = {CardList.class, DeckList.class}, version = 1, exportSchema = false)
 public abstract class CardsRoomDataBase extends RoomDatabase {
     public abstract CardsDao cardsDao();
+    public abstract DeckDao deckDao();
 
     private MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
 
     private static CardsRoomDataBase sInstance;
-
-    private static volatile CardsRoomDataBase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);

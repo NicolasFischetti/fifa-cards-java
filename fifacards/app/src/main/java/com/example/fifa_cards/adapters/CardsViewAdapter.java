@@ -1,6 +1,7 @@
-package com.example.fifa_cards;
+package com.example.fifa_cards.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.fifa_cards.entity.CardList;
+import com.example.fifa_cards.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.MyViewHolder>   {
+public class CardsViewAdapter extends RecyclerView.Adapter<CardsViewAdapter.MyViewHolder>   {
     private List<CardList> mDataset;
     private CardList players;
+    private List<CardList> cardLists = new ArrayList<>();
+    private int pos;
+    Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView name;
@@ -52,22 +59,27 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
                 if(players.isSelected()) {
                     players.setSelected(false);
                     cardView.setCardBackgroundColor(Color.WHITE);
+                    cardLists.add(players);
                 } else {
                     players.setSelected(true);
                     cardView.setCardBackgroundColor(Color.GRAY);
+                    cardLists.remove(players);
                 }
+
+                notifyItemChanged(pos);
             });
         }
     }
 
-    PlayerViewAdapter(List<CardList> myDataset) {
+    public CardsViewAdapter(Context context, List<CardList> myDataset) {
         mDataset = myDataset;
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public PlayerViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
+    public CardsViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                            int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.items_view, parent, false);
         return new MyViewHolder(v);
@@ -76,6 +88,7 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
     @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int i) {
+        this.pos = i;
         players = mDataset.get(i);
         String name = players.getName();
         String position = players.getPosition();
@@ -114,5 +127,9 @@ public class PlayerViewAdapter extends RecyclerView.Adapter<PlayerViewAdapter.My
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public List<CardList> getSelectedCards() {
+        return cardLists;
     }
 }

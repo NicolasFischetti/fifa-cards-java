@@ -1,4 +1,4 @@
-package com.example.fifa_cards;
+package com.example.fifa_cards.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

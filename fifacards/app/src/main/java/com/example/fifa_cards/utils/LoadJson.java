@@ -1,8 +1,9 @@
-package com.example.fifa_cards;
+package com.example.fifa_cards.utils;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+
+import com.example.fifa_cards.entity.CardList;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,10 +1,11 @@
-package com.example.fifa_cards;
+package com.example.fifa_cards.repository;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
+import com.example.fifa_cards.entity.CardList;
 import com.example.fifa_cards.database.CardsDao;
 import com.example.fifa_cards.database.CardsRoomDataBase;
 
@@ -15,7 +16,7 @@ public class CardsRepository {
     private MediatorLiveData<List<CardList>> liveDataPlayers = new MediatorLiveData<>();
     private CardsDao cardsDao;
 
-    CardsRepository(Application application) {
+    public CardsRepository(Application application) {
         CardsRoomDataBase db = CardsRoomDataBase.getInstance(application.getApplicationContext());
         cardsDao = db.cardsDao();
         liveDataPlayers.addSource(db.cardsDao().getall(),
@@ -26,11 +27,11 @@ public class CardsRepository {
                 });
     }
 
-    LiveData<List<CardList>> getAll() {
+    public LiveData<List<CardList>> getAll() {
         return liveDataPlayers;
     }
 
-    void insert(List<CardList> cards) {
+    public void insert(List<CardList> cards) {
         CardsRoomDataBase.databaseWriteExecutor.execute(() -> {
             cardsDao.insert(cards);
         });

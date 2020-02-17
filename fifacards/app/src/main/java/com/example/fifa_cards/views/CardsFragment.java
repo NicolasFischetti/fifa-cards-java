@@ -1,6 +1,7 @@
-package com.example.fifa_cards;
+package com.example.fifa_cards.views;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,17 +19,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.fifa_cards.R;
+import com.example.fifa_cards.adapters.CardsViewAdapter;
+import com.example.fifa_cards.entity.DeckList;
+import com.example.fifa_cards.viewmodel.CardsViewModel;
+
+import java.util.Random;
+
 import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
 
 public class CardsFragment extends Fragment {
 
     private Button createButton;
-    private PlayersViewModel viewModel;
+    private CardsViewModel viewModel;
     public NavController navController;
-    private PlayerViewAdapter playerViewAdapter;
+    private CardsViewAdapter playerViewAdapter;
+    public DeckList deckList;
 
-    public CardsFragment() {
-        // Required empty public constructor
+    public CardsFragment newInstance() {
+            return new CardsFragment();
     }
 
     @Override
@@ -38,11 +47,11 @@ public class CardsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_cards, container, false);
 
         createButton =  rootView.findViewById(R.id.create_deck_btn);
-        viewModel = ViewModelProviders.of(this).get(PlayersViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(CardsViewModel.class);
         viewModel.getPlayersCards().observe(getViewLifecycleOwner(), listPlayers -> {
             RecyclerView recyclerView = rootView.findViewById(R.id.my_recycler_view);
             if(playerViewAdapter == null) {
-                playerViewAdapter = new PlayerViewAdapter(listPlayers);
+                playerViewAdapter = new CardsViewAdapter(getContext(), listPlayers);
                 recyclerView.setAdapter(playerViewAdapter);
             }
             recyclerView.setSelected(true);
@@ -63,6 +72,8 @@ public class CardsFragment extends Fragment {
     private void alertDialog() {
         createButton.setOnClickListener(v -> {
             final EditText taskEditText = new EditText(getActivity());
+            deckList = new DeckList(randomId());
+            deckList.setName(taskEditText.getText().toString());
             AlertDialog dialog = new AlertDialog.Builder(getActivity())
                     .setTitle("Create your deck")
                     .setCancelable(false)
@@ -75,6 +86,11 @@ public class CardsFragment extends Fragment {
                     .create();
             dialog.show();
         });
+    }
+
+    private Integer randomId() {
+        Random random = new Random();
+        return random.nextInt() & Integer.MAX_VALUE;
     }
 
 }
