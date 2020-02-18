@@ -34,10 +34,8 @@ public class CardsFragment extends Fragment {
 
     private Button createButton;
     private CardsViewModel viewModel;
-    public NavController navController;
     private CardsViewAdapter playerViewAdapter;
     public DeckList deckList;
-    public List<CardList> players;
 
     public CardsFragment newInstance() {
             return new CardsFragment();
@@ -68,24 +66,19 @@ public class CardsFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-    }
-
     private void alertDialog() {
         createButton.setOnClickListener(v -> {
             final EditText taskEditText = new EditText(getActivity());
             deckList = new DeckList(randomId());
             deckList.setName(taskEditText.getText().toString());
+
             AlertDialog dialog = new AlertDialog.Builder(getActivity())
                     .setTitle("Create your deck")
                     .setCancelable(false)
                     .setMessage("Please enter a name")
                     .setView(taskEditText)
                     .setPositiveButton("Add", (dialog1, which) -> {
-                        navController.navigate(R.id.to_deck_fragment, null);
+                        Navigation.findNavController(v).navigate(R.id.to_deck_fragment, null);
                     })
                     .setNegativeButton("Cancel", null)
                     .create();

@@ -38,8 +38,6 @@ public class DeckFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_deck, container, false);
 
-
-
         deckViewModel = ViewModelProviders.of(this).get(DeckViewModel.class);
         deckViewModel.getDecksCard().observe(getViewLifecycleOwner(), listDecks ->{
             recyclerDeck = view.findViewById(R.id.my_recycler_view_decks);
@@ -47,6 +45,8 @@ public class DeckFragment extends Fragment {
                 recyclerDeck.setLayoutManager(new GridLayoutManager(getContext(), 2));
                 deckViewAdapter = new DeckViewAdapter(getContext(), listDecks);
                 recyclerDeck.setAdapter(deckViewAdapter);
+            } else {
+                deckViewAdapter.setDecksList(listDecks);
             }
         });
 

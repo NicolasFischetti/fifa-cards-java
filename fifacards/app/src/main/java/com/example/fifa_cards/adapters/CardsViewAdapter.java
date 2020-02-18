@@ -3,6 +3,7 @@ package com.example.fifa_cards.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,7 @@ import java.util.List;
 public class CardsViewAdapter extends RecyclerView.Adapter<CardsViewAdapter.MyViewHolder>   {
     private List<CardList> mDataset;
     private CardList players;
-    private List<CardList> cardLists = new ArrayList<>();
-    private int pos;
+    private List<CardList> cardListsSelected = new ArrayList<>();
     Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -42,6 +42,9 @@ public class CardsViewAdapter extends RecyclerView.Adapter<CardsViewAdapter.MyVi
         TextView def;
         TextView phy;
         CardView cardView;
+
+        CardList cardPlayers;
+        int pos;
 
         MyViewHolder(View v) {
             super(v);
@@ -57,18 +60,22 @@ public class CardsViewAdapter extends RecyclerView.Adapter<CardsViewAdapter.MyVi
             phy = v.findViewById(R.id.phy);
 
             cardView.setOnClickListener(view -> {
-                if(players.isSelected()) {
-                    players.setSelected(false);
-                    cardView.setCardBackgroundColor(Color.WHITE);
-                    cardLists.add(players);
-                } else {
-                    players.setSelected(true);
-                    cardView.setCardBackgroundColor(Color.GRAY);
-                    cardLists.remove(players);
-                }
 
+                if(cardPlayers.isSelected()) {
+                    cardPlayers.setSelected(false);
+                    cardListsSelected.remove(cardPlayers);
+                } else {
+                    cardPlayers.setSelected(true);
+                    cardListsSelected.add(cardPlayers);
+                }
+                Log.d("array", cardListsSelected.toString());
                 notifyItemChanged(pos);
             });
+        }
+
+        void retrivePosition(int position, CardList cardPlayers) {
+            this.pos = position;
+            this.cardPlayers = cardPlayers;
         }
     }
 
@@ -88,9 +95,9 @@ public class CardsViewAdapter extends RecyclerView.Adapter<CardsViewAdapter.MyVi
 
     @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int i) {
-        this.pos = i;
+    public void onBindViewHolder(MyViewHolder holder, int i) {
         players = mDataset.get(i);
+        holder.retrivePosition(i, mDataset.get(i));
         String name = players.getName();
         String position = players.getPosition();
         String getPlayerImage = players.getPlayerImage();
@@ -118,6 +125,11 @@ public class CardsViewAdapter extends RecyclerView.Adapter<CardsViewAdapter.MyVi
         holder.def.setText("DEF: " + def.toString());
         holder.phy.setText("PHY: " + phy.toString());
 
+        if(mDataset.get(i).isSelected()) {
+            holder.cardView.setCardBackgroundColor(Color.GRAY);
+        } else {
+            holder.cardView.setCardBackgroundColor(Color.WHITE);
+        }
     }
 
     @Override
@@ -131,7 +143,7 @@ public class CardsViewAdapter extends RecyclerView.Adapter<CardsViewAdapter.MyVi
     }
 
     public List<CardList> getSelectedCards() {
-        return cardLists;
+        return cardListsSelected;
     }
 
     public void setCardList(List<CardList> players){
