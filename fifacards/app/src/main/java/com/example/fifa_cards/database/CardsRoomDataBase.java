@@ -33,8 +33,10 @@ public abstract class CardsRoomDataBase extends RoomDatabase {
     public static CardsRoomDataBase getInstance(Context context) {
         if (sInstance == null) {
             synchronized (CardsRoomDataBase.class) {
-                sInstance = getDatabase(context);
-                sInstance.updateDatabaseCreated(context);
+                if(sInstance == null) {
+                    sInstance = getDatabase(context);
+                    sInstance.updateDatabaseCreated(context);
+                }
             }
         }
         return sInstance;
@@ -55,10 +57,11 @@ public abstract class CardsRoomDataBase extends RoomDatabase {
                         super.onCreate(db);
                         databaseWriteExecutor.execute(() -> {
                             addDelay();
-                            CardsRoomDataBase database = CardsRoomDataBase.getDatabase(context);
+                            CardsRoomDataBase database = CardsRoomDataBase.getInstance(context);
                             LoadJson json = new LoadJson(context);
                             List<CardList> cards = json.getJsonFileFromLocally();
                             database.cardsDao().insert(cards);
+                            database.setDatabaseCreated();
                         });
                     }
                 })

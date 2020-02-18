@@ -19,6 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.fifa_cards.entity.CardList;
 import com.example.fifa_cards.R;
+import com.example.fifa_cards.entity.DeckList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,5 +132,10 @@ public class CardsViewAdapter extends RecyclerView.Adapter<CardsViewAdapter.MyVi
 
     public List<CardList> getSelectedCards() {
         return cardLists;
+    }
+
+    public void setCardList(List<CardList> players){
+        mDataset = players;
+        notifyDataSetChanged();
     }
 }

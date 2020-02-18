@@ -14,14 +14,13 @@ import java.util.List;
 public class DeckList {
 
     @PrimaryKey
-    @NonNull
     @ColumnInfo(name = "id")
-    private Integer id;
+    private int id;
     private String name;
     private int countCards;
 
     @TypeConverters({ConverterType.class})
-    private List<CardList> cardLists;
+    public List<CardList> cardLists;
 
     public int getCountCards() {
         return countCards;
@@ -49,7 +48,7 @@ public class DeckList {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

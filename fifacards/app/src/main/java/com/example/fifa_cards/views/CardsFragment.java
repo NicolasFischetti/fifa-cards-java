@@ -21,9 +21,11 @@ import android.widget.EditText;
 
 import com.example.fifa_cards.R;
 import com.example.fifa_cards.adapters.CardsViewAdapter;
+import com.example.fifa_cards.entity.CardList;
 import com.example.fifa_cards.entity.DeckList;
 import com.example.fifa_cards.viewmodel.CardsViewModel;
 
+import java.util.List;
 import java.util.Random;
 
 import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
@@ -35,6 +37,7 @@ public class CardsFragment extends Fragment {
     public NavController navController;
     private CardsViewAdapter playerViewAdapter;
     public DeckList deckList;
+    public List<CardList> players;
 
     public CardsFragment newInstance() {
             return new CardsFragment();
@@ -53,6 +56,8 @@ public class CardsFragment extends Fragment {
             if(playerViewAdapter == null) {
                 playerViewAdapter = new CardsViewAdapter(getContext(), listPlayers);
                 recyclerView.setAdapter(playerViewAdapter);
+            } else {
+                playerViewAdapter.setCardList(listPlayers);
             }
             recyclerView.setSelected(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), VERTICAL, false));
