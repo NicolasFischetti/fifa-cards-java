@@ -3,6 +3,7 @@ package com.example.fifa_cards.repository;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 
 import com.example.fifa_cards.entity.DeckList;
 import com.example.fifa_cards.database.CardsRoomDataBase;
@@ -13,12 +14,16 @@ import java.util.List;
 public class DeckRepository {
 
     private DeckDao deckDao;
-    private LiveData<List<DeckList>> liveDataDecks;
+    private MediatorLiveData<List<DeckList>> liveDataDecks = new MediatorLiveData<>();
 
     public DeckRepository(Application application) {
         CardsRoomDataBase db = CardsRoomDataBase.getInstance(application.getApplicationContext());
         deckDao = db.deckDao();
-        liveDataDecks = deckDao.getAllDecks();
+        liveDataDecks.addSource(db.deckDao().getAllDecks(), deckLists -> {
+            if (db.getDatabaseCreated().getValue() != null) {
+                liveDataDecks.postValue(deckLists);
+            }
+        });
     }
 
     public LiveData<List<DeckList>> getAllDecks() {

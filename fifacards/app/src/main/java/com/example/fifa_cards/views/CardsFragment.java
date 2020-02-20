@@ -24,6 +24,7 @@ import com.example.fifa_cards.adapters.CardsViewAdapter;
 import com.example.fifa_cards.entity.CardList;
 import com.example.fifa_cards.entity.DeckList;
 import com.example.fifa_cards.viewmodel.CardsViewModel;
+import com.example.fifa_cards.viewmodel.DeckViewModel;
 
 import java.util.List;
 import java.util.Random;
@@ -36,6 +37,7 @@ public class CardsFragment extends Fragment {
     private CardsViewModel viewModel;
     private CardsViewAdapter playerViewAdapter;
     public DeckList deckList;
+    private DeckViewModel deckViewModel;
 
     public CardsFragment newInstance() {
             return new CardsFragment();
@@ -49,6 +51,7 @@ public class CardsFragment extends Fragment {
 
         createButton =  rootView.findViewById(R.id.create_deck_btn);
         viewModel = ViewModelProviders.of(this).get(CardsViewModel.class);
+        deckViewModel = ViewModelProviders.of(this).get(DeckViewModel.class);
         viewModel.getPlayersCards().observe(getViewLifecycleOwner(), listPlayers -> {
             RecyclerView recyclerView = rootView.findViewById(R.id.my_recycler_view);
             if(playerViewAdapter == null) {
@@ -70,14 +73,16 @@ public class CardsFragment extends Fragment {
         createButton.setOnClickListener(v -> {
             final EditText taskEditText = new EditText(getActivity());
             deckList = new DeckList(randomId());
-            deckList.setName(taskEditText.getText().toString());
-
             AlertDialog dialog = new AlertDialog.Builder(getActivity())
                     .setTitle("Create your deck")
                     .setCancelable(false)
                     .setMessage("Please enter a name")
                     .setView(taskEditText)
                     .setPositiveButton("Add", (dialog1, which) -> {
+                        String deckName = String.valueOf(taskEditText.getText());
+                        deckList.setName(deckName);
+                        deckList.setCardListPlayers(playerViewAdapter.getSelectedCards());
+                        deckViewModel.insert(deckList);
                         Navigation.findNavController(v).navigate(R.id.to_deck_fragment, null);
                     })
                     .setNegativeButton("Cancel", null)

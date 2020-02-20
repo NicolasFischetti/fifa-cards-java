@@ -18,11 +18,21 @@ public class DeckList {
     private String name;
     private int countCards;
 
+    private Boolean isSelected = false;
+
     @TypeConverters({ConverterType.class})
     public List<CardList> cardLists;
 
     public int getCountCards() {
         return countCards;
+    }
+
+    public Boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selection) {
+        isSelected = selection;
     }
 
     public void setCountCards(int countCards) {

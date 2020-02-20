@@ -148,6 +148,6 @@ public class CardsViewAdapter extends RecyclerView.Adapter<CardsViewAdapter.MyVi
 
     public void setCardList(List<CardList> players){
         mDataset = players;
-        notifyDataSetChanged();
+       notifyDataSetChanged();
     }
 }

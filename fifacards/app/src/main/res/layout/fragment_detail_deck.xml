@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="50dp"
-    tools:context=".views.DeckFragment">
+    tools:context=".views.DetailDeckFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <include layout="@layout/recycler_view_decks" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

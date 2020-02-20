@@ -22,6 +22,9 @@
         <action
             android:id="@+id/to_back_home"
             app:destination="@id/home_dest" />
+        <action
+            android:id="@+id/to_detail_fragment"
+            app:destination="@+id/detailDeckFragment" />
     </fragment>
     <fragment
         android:id="@+id/about_fragment"
@@ -33,5 +36,16 @@
         android:name="com.example.fifa_cards.views.SettingFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/detailDeckFragment"
+        android:name="com.example.fifa_cards.views.DetailDeckFragment"
+        android:label="Deck Detail"
+        tools:layout="@layout/fragment_detail_deck" >
+        <action
+            android:id="@+id/action_detailDeckFragment_to_deckFragment"
+            app:destination="@id/deckFragment" />
+        <argument android:name="deckID" app:argType="integer"/>
+        <argument android:name="visualizationMode" app:argType="integer"/>
+    </fragment>
 
 </navigation>
